@@ -1,13 +1,15 @@
 {
   "name": "fabric-weight-inventory-scale",
   "version": "1.0.0",
+  "private": true,
+  "type": "module",
   "description": "Apple-inspired Professional Fabric Weight Scale & Inventory Dashboard with Real-time Tare & Tube Compensation",
   "scripts": {
     "dev": "vite --port 3000 --open",
     "build": "vite build",
     "preview": "vite preview"
   },
-  "devDependencies": {
+  "dependencies": {
     "vite": "^6.2.0"
   }
 }
