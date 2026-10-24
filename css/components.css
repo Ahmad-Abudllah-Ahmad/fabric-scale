@@ -2282,36 +2282,30 @@ body:has(#tab-live-scale.active) .main-container {
 .login-spark-attribution {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  font-size: 11px;
-  color: #64748b;
-  font-weight: 500;
-  margin-top: 4px;
+  justify-content: center;
+  margin-top: 6px;
 }
 
-[data-theme="dark"] .login-spark-attribution {
-  color: rgba(255, 255, 255, 0.5);
+.spark-powered-img {
+  height: 22px;
+  width: auto;
+  object-fit: contain;
+  display: block;
 }
 
-.spark-bolt-icon {
-  color: #6366f1;
+[data-theme="dark"] .spark-powered-img.logo-light {
+  display: none !important;
 }
 
-.spark-brand-name {
-  font-weight: 800;
-  color: #1e293b;
-  letter-spacing: -0.01em;
+[data-theme="light"] .spark-powered-img.logo-dark {
+  display: none !important;
 }
 
-[data-theme="dark"] .spark-brand-name {
-  color: #ffffff;
-}
-
-.spark-sub-name {
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  color: #64748b;
+.spark-btn-icon {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  flex-shrink: 0;
 }
 
 .login-text-header {
