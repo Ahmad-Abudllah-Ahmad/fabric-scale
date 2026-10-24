@@ -7,8 +7,9 @@ document.addEventListener("DOMContentLoaded", () => {
   // Application State
   const state = {
     activeTab: "live-scale",
-    theme: localStorage.getItem("apple_theme_mode") || "dark",
-    currentTubeWeight: 0.85, // Current hole tube tare weight (editable directly on live scale)
+    theme: localStorage.getItem("apple_theme_mode") || "light",
+    currentTubeWeight: 1.20, // Current hole tube tare weight (editable directly on live scale)
+    currentTubeAmount: 1, // Number of tubes / amount multiplier
     grossWeight: 0.00,
     unit: "kg",
     isStable: true,
@@ -55,10 +56,14 @@ document.addEventListener("DOMContentLoaded", () => {
     // Sparkline Canvas
     scaleSparkline: document.getElementById("scaleSparkline"),
 
-    // Single Unified Weights Component (HOLE TUBE WEIGHT & PURE NET FABRIC WEIGHT)
+    // Single Unified Weights Component (HOLE TUBE WEIGHT, AMOUNT & PURE NET FABRIC WEIGHT)
     tubeWeightInput: document.getElementById("tubeWeightInput"),
     tubeMinusBtn: document.getElementById("tubeMinusBtn"),
     tubePlusBtn: document.getElementById("tubePlusBtn"),
+    tubeAmountInput: document.getElementById("tubeAmountInput"),
+    amountMinusBtn: document.getElementById("amountMinusBtn"),
+    amountPlusBtn: document.getElementById("amountPlusBtn"),
+    logoutBtn: document.getElementById("logoutBtn"),
     tubeUnitLabel: document.getElementById("tubeUnitLabel"),
     netWeightVal: document.getElementById("netWeightVal"),
     netWeightUnit: document.getElementById("netWeightUnit"),
@@ -534,7 +539,6 @@ document.addEventListener("DOMContentLoaded", () => {
       state.grossWeight = 0.00;
       updateCalculations();
       triggerTareZeroSettle();
-      showToast("Scale Zeroed", "Platform already at zero tare.", "info");
       return;
     }
 
@@ -570,7 +574,6 @@ document.addEventListener("DOMContentLoaded", () => {
         state.isTareZeroing = false;
         updateCalculations();
         triggerTareZeroSettle();
-        showToast("Scale Zeroed", "Current scale reading calibrated to 0.00.", "info");
       }
     }
 
@@ -655,33 +658,115 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // Active input tracking for + / - buttons and keyboard controls
+  let activeTareInput = elements.tubeAmountInput;
+
+  function stepTubeWeight(direction) {
+    const step = (state.unit === "lb" ? 0.10 : 0.05) * direction;
+    const currentDisplay = state.unit === "lb" ? (state.currentTubeWeight * 2.20462) : state.currentTubeWeight;
+    const nextDisplay = Math.max(0, parseFloat((currentDisplay + step).toFixed(2)));
+    if (elements.tubeWeightInput) {
+      triggerHitAnimation(elements.tubeWeightInput, direction > 0);
+    }
+    setTubeWeight(nextDisplay);
+  }
+
+  function stepAmount(direction) {
+    const nextAmount = Math.max(1, (state.currentTubeAmount || 1) + direction);
+    state.currentTubeAmount = nextAmount;
+    if (elements.tubeAmountInput) {
+      elements.tubeAmountInput.value = nextAmount;
+      triggerHitAnimation(elements.tubeAmountInput, direction > 0);
+    }
+    updateCalculations();
+    pulseCalculatedOutputs();
+  }
+
+  function handleInputStepKey(e, inputEl) {
+    if (e.key === "+" || e.key === "=" || e.key === "ArrowUp") {
+      e.preventDefault();
+      if (inputEl === elements.tubeWeightInput) {
+        stepTubeWeight(1);
+      } else {
+        stepAmount(1);
+      }
+    } else if (e.key === "-" || e.key === "_" || e.key === "ArrowDown") {
+      e.preventDefault();
+      if (inputEl === elements.tubeWeightInput) {
+        stepTubeWeight(-1);
+      } else {
+        stepAmount(-1);
+      }
+    }
+  }
+
   // Stepper +- buttons for HOLE TUBE WEIGHT
   if (elements.tubeMinusBtn) {
     elements.tubeMinusBtn.addEventListener("click", () => {
-      const step = state.unit === "lb" ? 0.10 : 0.05;
-      const currentDisplay = state.unit === "lb" ? (state.currentTubeWeight * 2.20462) : state.currentTubeWeight;
-      const nextDisplay = Math.max(0, parseFloat((currentDisplay - step).toFixed(2)));
-      triggerHitAnimation(elements.tubeWeightInput, false);
-      setTubeWeight(nextDisplay);
+      stepTubeWeight(-1);
     });
   }
 
   if (elements.tubePlusBtn) {
     elements.tubePlusBtn.addEventListener("click", () => {
-      const step = state.unit === "lb" ? 0.10 : 0.05;
-      const currentDisplay = state.unit === "lb" ? (state.currentTubeWeight * 2.20462) : state.currentTubeWeight;
-      const nextDisplay = parseFloat((currentDisplay + step).toFixed(2));
-      triggerHitAnimation(elements.tubeWeightInput, true);
-      setTubeWeight(nextDisplay);
+      stepTubeWeight(1);
+    });
+  }
+
+  // Stepper +- buttons for AMOUNT
+  if (elements.amountMinusBtn) {
+    elements.amountMinusBtn.addEventListener("click", () => {
+      stepAmount(-1);
+    });
+  }
+
+  if (elements.amountPlusBtn) {
+    elements.amountPlusBtn.addEventListener("click", () => {
+      stepAmount(1);
+    });
+  }
+
+  // Tracking active focus and keyboard +/- controls
+  if (elements.tubeWeightInput) {
+    elements.tubeWeightInput.addEventListener("focus", () => {
+      activeTareInput = elements.tubeWeightInput;
+    });
+    elements.tubeWeightInput.addEventListener("keydown", (e) => handleInputStepKey(e, elements.tubeWeightInput));
+  }
+
+  if (elements.tubeAmountInput) {
+    elements.tubeAmountInput.addEventListener("focus", () => {
+      activeTareInput = elements.tubeAmountInput;
+    });
+    elements.tubeAmountInput.addEventListener("keydown", (e) => handleInputStepKey(e, elements.tubeAmountInput));
+
+    const handleAmountChange = (e) => {
+      const val = parseInt(e.target.value, 10);
+      if (!isNaN(val) && val >= 1) {
+        state.currentTubeAmount = val;
+        updateCalculations();
+        pulseCalculatedOutputs();
+      }
+    };
+    elements.tubeAmountInput.addEventListener("input", handleAmountChange);
+    elements.tubeAmountInput.addEventListener("change", handleAmountChange);
+    elements.tubeAmountInput.addEventListener("blur", () => {
+      if (!elements.tubeAmountInput.value || parseInt(elements.tubeAmountInput.value, 10) < 1) {
+        state.currentTubeAmount = 1;
+        elements.tubeAmountInput.value = 1;
+        updateCalculations();
+        pulseCalculatedOutputs();
+      }
     });
   }
 
   /* =========================================================================
      Scale Telemetry & Net Weight Calculation Engine
      Formula:
-     1. Net Fabric Weight = Gross Scale Weight - Hole Tube Tare Weight
-     2. Computed Roll Length (meters) = (Net Weight in grams) / (Width in meters * GSM)
-     3. Computed Roll Length (yards) = Meters * 1.09361
+     1. Total Tare = Hole Tube Tare Weight * Amount
+     2. Net Fabric Weight = Gross Scale Weight - Total Tare
+     3. Computed Roll Length (meters) = (Net Weight in grams) / (Width in meters * GSM)
+     4. Computed Roll Length (yards) = Meters * 1.09361
      ========================================================================= */
   function updateCalculations() {
     const active = window.fabricStore.getActiveFabric();
@@ -690,13 +775,16 @@ document.addEventListener("DOMContentLoaded", () => {
     // Both gross & tube always maintained in raw kilograms
     const grossKg = state.grossWeight;
     const tubeKg = state.currentTubeWeight;
+    const tubeAmount = state.currentTubeAmount || 1;
+    const totalTareKg = tubeKg * tubeAmount;
     
-    // Net Fabric Weight (pure fabric minus tube core)
-    const netKg = Math.max(0, parseFloat((grossKg - tubeKg).toFixed(2)));
+    // Net Fabric Weight (pure fabric minus total tube core tare)
+    const netKg = grossKg <= 0.001 ? 0.00 : Math.max(0, parseFloat((grossKg - totalTareKg).toFixed(2)));
     
     // Units conversion for display
     const displayGross = state.unit === "lb" ? (grossKg * 2.20462) : grossKg;
     const displayTube = state.unit === "lb" ? (tubeKg * 2.20462) : tubeKg;
+    const displayTotalTare = state.unit === "lb" ? (totalTareKg * 2.20462) : totalTareKg;
     const displayNet = state.unit === "lb" ? (netKg * 2.20462) : netKg;
 
     updateElementWithHit(elements.grossWeightVal, displayGross.toFixed(2), displayGross, 0.02);
@@ -1645,8 +1733,71 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   /* =========================================================================
+     Industrial Login Portal Handlers (Matching Design Reference)
+     ========================================================================= */
+  const loginOverlay = document.getElementById("loginOverlay");
+  const loginForm = document.getElementById("loginForm");
+  const loginDemoBtn = document.getElementById("loginDemoBtn");
+  const loginPassword = document.getElementById("loginPassword");
+  const loginEyeToggleBtn = document.getElementById("loginEyeToggleBtn");
+
+  function unlockAccessPortal() {
+    if (loginOverlay) {
+      loginOverlay.classList.add("hidden");
+      sessionStorage.setItem("nishat_auth", "true");
+    }
+  }
+
+  function lockAccessPortal() {
+    if (loginOverlay) {
+      loginOverlay.classList.remove("hidden");
+      sessionStorage.removeItem("nishat_auth");
+    }
+  }
+
+  if (loginForm) {
+    loginForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      unlockAccessPortal();
+      showToast("Access Granted", "Signed into Nishat Linen Operations Centre.", "success");
+    });
+  }
+
+  if (loginDemoBtn) {
+    loginDemoBtn.addEventListener("click", () => {
+      unlockAccessPortal();
+      showToast("Demo Access Active", "Operating in high-precision simulated environment.", "info");
+    });
+  }
+
+  if (loginEyeToggleBtn && loginPassword) {
+    loginEyeToggleBtn.addEventListener("click", () => {
+      const isPass = loginPassword.type === "password";
+      loginPassword.type = isPass ? "text" : "password";
+      loginEyeToggleBtn.innerHTML = isPass
+        ? `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`
+        : `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
+    });
+  }
+
+  if (elements.logoutBtn) {
+    elements.logoutBtn.addEventListener("click", () => {
+      lockAccessPortal();
+      showToast("Signed Out", "Portal session locked.", "info");
+    });
+  }
+
+  // Check initial login session state
+  if (sessionStorage.getItem("nishat_auth") === "true") {
+    if (loginOverlay) loginOverlay.classList.add("hidden");
+  } else {
+    if (loginOverlay) loginOverlay.classList.remove("hidden");
+  }
+
+  /* =========================================================================
      Initial App Boot
      ========================================================================= */
+  applyTheme(state.theme);
   syncActiveFabricDisplay();
   renderFabricCatalog();
   renderInventoryTable();

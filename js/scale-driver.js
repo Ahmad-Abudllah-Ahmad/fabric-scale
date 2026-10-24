@@ -21,10 +21,10 @@ class ScaleDriver {
     // History buffer for sparkline (last 40 points)
     this.readingHistory = Array(40).fill(0);
     
-    // Simulator Physics parameters (matching default COT-TWL-280: 24.86kg net + 0.85kg tube tare = 25.71kg gross)
-    this.targetWeight = 25.71;
-    this.simulatedCurrentWeight = 25.71;
-    this.rawGrossWeight = 25.71;
+    // Simulator Physics parameters (default starts at 0.00 kg)
+    this.targetWeight = 0.00;
+    this.simulatedCurrentWeight = 0.00;
+    this.rawGrossWeight = 0.00;
     this.simNoise = true;
     this.simTimer = null;
     this.listeners = new Set();

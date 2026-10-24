@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FabricScale Pro — Industrial Weight & Inventory Station</title>
+  <title>FabricScale Pro — Nishat Linen Industrial Scale Station</title>
   <meta name="description" content="Professional Apple-inspired Fabric Weight Scale Dashboard with real-time digital scale connection, core tube tare compensation, and inventory tracking.">
+  <link rel="icon" type="image/png" href="./assets/logo-transparent.png">
+  <link rel="apple-touch-icon" href="./assets/logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
@@ -37,11 +39,15 @@
         </button>
       </nav>
 
-      <!-- Right Actions: Theme Toggle -->
+      <!-- Right Actions: Theme Toggle & Logout -->
       <div class="navbar-actions">
         <!-- Theme Toggle (Dark / Light) -->
         <button class="icon-btn" id="themeToggleBtn" title="Toggle Theme" aria-label="Toggle Theme">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+        <!-- Logout / Exit to Login Page -->
+        <button class="icon-btn" id="logoutBtn" title="Sign Out / Access Portal" aria-label="Sign Out">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
         </button>
       </div>
     </header>
@@ -108,7 +114,7 @@
             </div>
 
             <div class="reading-value-box">
-              <span class="gross-weight-number tabular-nums" id="grossWeightVal">25.71</span>
+              <span class="gross-weight-number tabular-nums" id="grossWeightVal">0.00</span>
               <span class="gross-weight-unit" id="grossWeightUnit">kg</span>
             </div>
 
@@ -129,39 +135,63 @@
           <!-- Sleek Divider Line 2 -->
           <div class="terminal-h-divider"></div>
 
-          <!-- Section 3: Dual Weights (HOLE TUBE WEIGHT & PURE NET FABRIC WEIGHT) -->
+          <!-- Section 3: Dual Weights (HOLE TUBE WEIGHT & AMOUNT & PURE NET FABRIC WEIGHT) -->
           <div class="terminal-dual-weights-section">
-            <!-- Left: Hole Tube Weight (Centered with visible +- stepper buttons) -->
+            <!-- Left: Hole Tube Weight & Amount Steppers -->
             <div class="terminal-weight-col tube-col">
-              <div class="terminal-col-header">
-                <span class="terminal-col-dot"></span>
-                <span class="terminal-col-title">HOLE TUBE WEIGHT:</span>
-              </div>
-              <div class="tube-edit-box">
-                <button type="button" class="tube-step-btn" id="tubeMinusBtn" title="Decrease tube tare (-0.05)" aria-label="Decrease Tube Weight">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                </button>
-                <div class="tube-input-wrapper">
-                  <input type="number" step="0.01" min="0" max="20" class="tube-live-input tabular-nums" id="tubeWeightInput" value="0.85" aria-label="Hole Tube Weight">
-                  <span class="weight-unit-badge" id="tubeUnitLabel">kg</span>
+              <div class="tube-dual-inputs-row">
+                <!-- Hole Tube Weight -->
+                <div class="tube-input-group">
+                  <div class="terminal-col-header">
+                    <span class="terminal-col-dot"></span>
+                    <span class="terminal-col-title">HOLE TUBE WEIGHT:</span>
+                  </div>
+                  <div class="tube-edit-box">
+                    <button type="button" class="tube-step-btn" id="tubeMinusBtn" title="Decrease tube tare (-0.05)" aria-label="Decrease Tube Weight">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    </button>
+                    <div class="tube-input-wrapper">
+                      <input type="number" step="0.01" min="0" max="20" class="tube-live-input tabular-nums" id="tubeWeightInput" value="1.20" aria-label="Hole Tube Weight">
+                      <span class="weight-unit-badge" id="tubeUnitLabel">kg</span>
+                    </div>
+                    <button type="button" class="tube-step-btn" id="tubePlusBtn" title="Increase tube tare (+0.05)" aria-label="Increase Tube Weight">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    </button>
+                  </div>
                 </div>
-                <button type="button" class="tube-step-btn" id="tubePlusBtn" title="Increase tube tare (+0.05)" aria-label="Increase Tube Weight">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                </button>
+
+                <!-- Tube Amount -->
+                <div class="tube-input-group">
+                  <div class="terminal-col-header">
+                    <span class="terminal-col-dot"></span>
+                    <span class="terminal-col-title">AMOUNT:</span>
+                  </div>
+                  <div class="tube-edit-box">
+                    <button type="button" class="tube-step-btn" id="amountMinusBtn" title="Decrease amount (-1)" aria-label="Decrease Amount">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    </button>
+                    <div class="tube-input-wrapper amount-input-wrapper">
+                      <input type="number" step="1" min="1" max="500" class="tube-live-input tabular-nums" id="tubeAmountInput" value="1" aria-label="Amount">
+                    </div>
+                    <button type="button" class="tube-step-btn" id="amountPlusBtn" title="Increase amount (+1)" aria-label="Increase Amount">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
 
             <!-- Sleek Vertical Line Divider -->
             <div class="terminal-v-divider"></div>
 
-            <!-- Right: Pure Net Fabric Weight (Centered) -->
+            <!-- Right: Pure Net Fabric Weight -->
             <div class="terminal-weight-col net-col">
               <div class="terminal-col-header">
                 <span class="terminal-col-dot"></span>
                 <span class="terminal-col-title">PURE NET FABRIC WEIGHT:</span>
               </div>
               <div class="net-live-box">
-                <span class="net-live-number tabular-nums" id="netWeightVal">24.86</span>
+                <span class="net-live-number tabular-nums" id="netWeightVal">0.00</span>
                 <span class="weight-unit-badge net-unit" id="netWeightUnit">kg</span>
               </div>
             </div>
@@ -175,7 +205,7 @@
             <div class="terminal-metric-cell">
               <span class="terminal-metric-label">Calculated Length (m)</span>
               <div class="terminal-metric-value">
-                <span id="calcMetersVal" class="tabular-nums">60.00</span>
+                <span id="calcMetersVal" class="tabular-nums">0.00</span>
                 <span class="terminal-metric-unit">meters</span>
               </div>
             </div>
@@ -186,7 +216,7 @@
             <div class="terminal-metric-cell">
               <span class="terminal-metric-label">EQUIVALENT YARDAGE (US)</span>
               <div class="terminal-metric-value">
-                <span id="calcYardsVal" class="tabular-nums">65.62</span>
+                <span id="calcYardsVal" class="tabular-nums">0.00</span>
                 <span class="terminal-metric-unit">yards</span>
               </div>
             </div>
@@ -586,6 +616,70 @@
     <!-- Toast Notification Container -->
     <div class="toast-container" id="toastContainer" aria-live="polite"></div>
 
+  </div>
+
+  <!-- ===================================================================
+       INDUSTRIAL LOGIN PORTAL OVERLAY (Design Reference Matching)
+       =================================================================== -->
+  <div id="loginOverlay" class="login-portal-overlay">
+    <div class="login-card-panel">
+      <!-- Brand Logo & Spark Powered By -->
+      <div class="login-header-branding">
+        <div class="login-logo-wrap">
+          <img src="./assets/logo-transparent.png" alt="Nishat Linen" class="login-logo-img logo-light">
+          <img src="./assets/logo-transparent-dark.png" alt="Nishat Linen" class="login-logo-img logo-dark">
+        </div>
+        <div class="login-spark-attribution">
+          <span class="spark-label">Powered By</span>
+          <svg class="spark-bolt-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          <span class="spark-brand-name">Spark</span>
+          <span class="spark-sub-name">TECHNOLOGIES</span>
+        </div>
+      </div>
+
+      <!-- Welcome Headings -->
+      <div class="login-text-header">
+        <h2 class="login-main-title">Welcome back</h2>
+        <p class="login-sub-title">Sign in to access the operations centre.</p>
+      </div>
+
+      <!-- Login Form -->
+      <form id="loginForm" class="login-auth-form" autocomplete="off" onsubmit="return false;">
+        <div class="login-input-group">
+          <label for="loginUsername" class="login-input-label">USERNAME</label>
+          <div class="login-field-container">
+            <svg class="login-field-lead-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <input type="text" id="loginUsername" class="login-text-input" placeholder="Enter username" value="operator@nishatlinen.com" required>
+          </div>
+        </div>
+
+        <div class="login-input-group">
+          <label for="loginPassword" class="login-input-label">PASSWORD</label>
+          <div class="login-field-container">
+            <svg class="login-field-lead-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <input type="password" id="loginPassword" class="login-text-input" placeholder="Enter password" value="password123" required>
+            <button type="button" class="login-eye-toggle-btn" id="loginEyeToggleBtn" title="Toggle password visibility" aria-label="Toggle password visibility">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <button type="submit" class="login-primary-submit-btn" id="loginSubmitBtn">
+          Sign In
+        </button>
+
+        <button type="button" class="login-demo-access-btn" id="loginDemoBtn">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          Continue with demo access
+        </button>
+      </form>
+
+      <!-- Security Trust Footer -->
+      <div class="login-security-footer">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <span>Secured · Industrial Access Portal</span>
+      </div>
+    </div>
   </div>
 
   <!-- App Scripts -->
