@@ -1,0 +1,2170 @@
+/* ==========================================================================
+   Component Styles - Live Scale, Tube Tare Editor, Fabric Catalog & Inventory
+   ========================================================================== */
+
+/* Quick Notification Banner (Toast) */
+.toast-container {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  pointer-events: none;
+}
+
+.apple-toast {
+  background: var(--bg-glass-strong);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--border-medium);
+  box-shadow: var(--shadow-lg);
+  border-radius: var(--radius-md);
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--text-primary);
+  font-size: 13px;
+  font-weight: 500;
+  min-width: 280px;
+  max-width: 420px;
+  pointer-events: auto;
+  transform: translateY(20px);
+  opacity: 0;
+  animation: toastSlideUp 0.35s var(--ease-spring) forwards;
+}
+
+@keyframes toastSlideUp {
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.apple-toast.success .toast-icon {
+  color: var(--apple-green);
+}
+
+.apple-toast.warning .toast-icon {
+  color: var(--apple-orange);
+}
+
+.apple-toast.info .toast-icon {
+  color: var(--apple-blue);
+}
+
+/* ==========================================================================
+   Active Fabric Banner / Quick-Selector (Live Scale Tab)
+   ========================================================================== */
+
+.active-fabric-bar {
+  background: var(--bg-card);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 16px 22px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-normal);
+}
+
+.active-fabric-bar:hover {
+  border-color: var(--border-medium);
+}
+
+.active-fabric-left {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.fabric-swatch-badge {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  font-size: 20px;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.fabric-swatch-badge::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, transparent 60%);
+}
+
+.active-fabric-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.fabric-code-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--apple-blue);
+}
+
+.active-fabric-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+.fabric-specs-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 2px;
+}
+
+.spec-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  background: var(--bg-glass-subtle);
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-subtle);
+}
+
+.spec-chip strong {
+  color: var(--text-primary);
+}
+
+.active-fabric-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Apple Buttons */
+.apple-btn {
+  appearance: none;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 9px 18px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all var(--transition-fast);
+  user-select: none;
+}
+
+.apple-btn-secondary {
+  background: var(--bg-card);
+  color: var(--text-primary);
+  border: 1px solid var(--border-medium);
+  box-shadow: var(--shadow-sm);
+}
+
+.apple-btn-secondary:hover {
+  background: var(--bg-card-hover);
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: translateY(-1px);
+}
+
+.apple-btn-primary {
+  background: var(--apple-blue);
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(10, 132, 255, 0.4);
+}
+
+.apple-btn-primary:hover {
+  background: var(--apple-blue-hover);
+  box-shadow: 0 6px 18px rgba(10, 132, 255, 0.55);
+  transform: translateY(-1px);
+}
+
+.apple-btn-success {
+  background: var(--apple-green);
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(48, 209, 88, 0.35);
+}
+
+.apple-btn-success:hover {
+  background: var(--apple-green-hover);
+  box-shadow: 0 6px 18px rgba(48, 209, 88, 0.5);
+  transform: translateY(-1px);
+}
+
+.apple-btn-danger {
+  background: var(--apple-red-subtle);
+  color: var(--apple-red);
+  border: 1px solid rgba(255, 69, 58, 0.25);
+}
+
+.apple-btn-danger:hover {
+  background: var(--apple-red);
+  color: #fff;
+}
+
+/* ==========================================================================
+   Live Scale Main Grid Layout
+   ========================================================================== */
+
+.live-scale-grid {
+  display: grid;
+  grid-template-columns: 1.45fr 1fr;
+  gap: 24px;
+}
+
+@media (max-width: 1080px) {
+  .live-scale-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Card Base */
+.apple-card {
+  background: var(--bg-card);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  padding: 24px;
+  box-shadow: var(--shadow-glass);
+  position: relative;
+  overflow: hidden;
+  transition: border-color var(--transition-normal), box-shadow var(--transition-normal);
+}
+
+.apple-card:hover {
+  border-color: var(--border-medium);
+}
+
+.apple-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.card-title-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.card-title-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-xs);
+  background: var(--apple-blue-subtle);
+  color: var(--apple-blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-title {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+}
+
+.card-subtitle {
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+
+/* ==========================================================================
+   Live Weight Scale Hero Section
+   ========================================================================== */
+
+.scale-hero-display {
+  background: radial-gradient(120% 120% at 50% 0%, rgba(255, 255, 255, 0.05) 0%, rgba(0, 0, 0, 0.25) 100%), var(--bg-secondary);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-lg);
+  padding: 24px 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.scale-telemetry-badge {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.reading-stability {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-medium);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.reading-stability.motion {
+  background: var(--apple-orange-subtle);
+  color: var(--apple-orange);
+  border-color: rgba(255, 159, 10, 0.3);
+}
+
+.reading-stability .indicator-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--apple-green);
+  box-shadow: 0 0 6px rgba(48, 209, 88, 0.45);
+}
+
+.reading-stability.motion .indicator-dot {
+  background: var(--apple-orange);
+  box-shadow: 0 0 6px rgba(255, 159, 10, 0.45);
+}
+
+.unit-selector {
+  display: inline-flex;
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-sm);
+  padding: 2px;
+  border: 1px solid var(--border-subtle);
+}
+
+.unit-btn {
+  appearance: none;
+  border: none;
+  background: transparent;
+  color: var(--text-tertiary);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.unit-btn.active {
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ==========================================================================
+   Switch Fabric Type Button (Next to KG / LB) & Apple Popover Dropdown
+   ========================================================================== */
+.scale-hero-display {
+  overflow: visible;
+}
+
+.apple-card.scale-live-card {
+  overflow: visible;
+}
+
+.fabric-dropdown-wrapper {
+  position: relative;
+}
+
+.fabric-dropdown-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 28px;
+  padding: 0 10px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.fabric-dropdown-toggle-btn:hover {
+  background: var(--bg-elevated);
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-sm);
+}
+
+.fabric-dropdown-toggle-btn.open {
+  background: var(--bg-elevated);
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
+}
+
+.fabric-dropdown-toggle-btn .switch-icon {
+  color: #9ca3af;
+  flex-shrink: 0;
+}
+
+.fabric-dropdown-toggle-btn .btn-label-text {
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.fabric-dropdown-toggle-btn .active-fabric-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  border: 1px solid var(--border-medium);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.02em;
+}
+
+.fabric-dropdown-toggle-btn .dropdown-chevron {
+  color: var(--text-tertiary);
+  transition: transform var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.fabric-dropdown-toggle-btn.open .dropdown-chevron {
+  transform: rotate(180deg);
+  color: var(--text-primary);
+}
+
+/* Popover Dropdown Menu */
+.apple-dropdown-menu {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: calc(100% + 6px);
+  z-index: 1000;
+  width: 380px;
+  background: var(--bg-elevated);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xl), 0 20px 40px -10px rgba(0, 0, 0, 0.6);
+  padding: 8px;
+  opacity: 0;
+  transform: translateY(-6px) scale(0.98);
+  transform-origin: top right;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  pointer-events: none;
+}
+
+.apple-dropdown-menu.show {
+  display: flex;
+  flex-direction: column;
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.dropdown-menu-header {
+  padding: 6px 8px 8px;
+  border-bottom: 1px solid var(--border-subtle);
+  margin-bottom: 6px;
+}
+
+.dropdown-menu-title {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-tertiary);
+  margin-bottom: 6px;
+}
+
+.dropdown-search-box {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg-input);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 4px 8px;
+  color: var(--text-tertiary);
+}
+
+.dropdown-search-box:focus-within {
+  border-color: var(--apple-blue);
+  background: var(--bg-card);
+}
+
+.dropdown-search-box input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text-primary);
+  font-size: 12px;
+  width: 100%;
+}
+
+.dropdown-search-box input::placeholder {
+  color: var(--text-tertiary);
+}
+
+.dropdown-fabric-list {
+  max-height: 290px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 2px 0;
+}
+
+.dropdown-fabric-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-align: left;
+  border: 1px solid transparent;
+  background: transparent;
+  width: 100%;
+}
+
+.dropdown-fabric-item:hover {
+  background: var(--bg-hover);
+}
+
+.dropdown-fabric-item.active {
+  background: rgba(10, 132, 255, 0.1);
+  border-color: rgba(10, 132, 255, 0.25);
+}
+
+.dropdown-tag-badge {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  color: #ffffff;
+  flex-shrink: 0;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+.dropdown-item-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.dropdown-item-top {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 2px;
+}
+
+.dropdown-item-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dropdown-item-category {
+  font-size: 10px;
+  color: var(--text-tertiary);
+  background: var(--bg-tertiary);
+  padding: 1px 5px;
+  border-radius: 3px;
+}
+
+.dropdown-item-specs {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dropdown-item-specs strong {
+  color: var(--text-secondary);
+}
+
+.dropdown-item-check {
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--apple-blue);
+  flex-shrink: 0;
+}
+
+.dropdown-menu-footer {
+  padding: 6px 8px 2px;
+  border-top: 1px solid var(--border-subtle);
+  margin-top: 4px;
+}
+
+.dropdown-footer-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  padding: 6px;
+  border: none;
+  background: transparent;
+  color: var(--apple-blue);
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+
+.dropdown-footer-link:hover {
+  background: var(--bg-hover);
+}
+
+/* Huge Apple Scale Reading Display */
+.reading-value-box {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 10px;
+  margin: 12px 0 16px;
+}
+
+.gross-weight-number {
+  font-size: 78px;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  color: var(--text-primary);
+  line-height: 1;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.gross-weight-unit {
+  font-size: 26px;
+  font-weight: 500;
+  color: var(--text-tertiary);
+  letter-spacing: -0.01em;
+}
+
+/* Gross Label */
+.scale-reading-label {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-tertiary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Realtime Waveform Mini Sparkline Canvas */
+.scale-waveform-container {
+  width: 100%;
+  height: 48px;
+  margin-top: 14px;
+  position: relative;
+}
+
+#scaleSparkline {
+  width: 100%;
+  height: 48px;
+  display: block;
+}
+
+/* Scale Quick Action Controls */
+.scale-quick-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 20px;
+  width: 100%;
+}
+
+/* ==========================================================================
+   Full-Screen Live Scale Station - Fit without Any Scroll Effect
+   ========================================================================== */
+
+#tab-live-scale.active {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  flex: 1 1 0;
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+body.view-live-scale,
+body:has(#tab-live-scale.active) {
+  overflow: hidden;
+  height: 100vh;
+  max-height: 100vh;
+}
+
+body.view-live-scale .app-wrapper,
+body:has(#tab-live-scale.active) .app-wrapper {
+  height: 100vh;
+  max-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+body.view-live-scale .main-container,
+body:has(#tab-live-scale.active) .main-container {
+  padding: 8px 18px 12px;
+  height: calc(100vh - 64px);
+  max-height: calc(100vh - 64px);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  flex: 1 1 0;
+  min-height: 0;
+}
+
+/* Unified Live Scale Terminal (No nested components) */
+.live-scale-terminal {
+  flex: 1 1 0;
+  min-height: 0;
+  height: 100%;
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  box-sizing: border-box;
+  overflow: visible;
+  position: relative;
+}
+
+/* Simple Sleek Dividers */
+.terminal-h-divider {
+  width: 100%;
+  height: 1px;
+  background: var(--border-subtle);
+  flex-shrink: 0;
+}
+
+.terminal-v-divider {
+  width: 1px;
+  height: 60%;
+  background: var(--border-subtle);
+  align-self: center;
+  flex-shrink: 0;
+}
+
+/* Section 1: Header Bar */
+.terminal-header-bar {
+  flex: 0 0 46px;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  box-sizing: border-box;
+  background: transparent;
+}
+
+.terminal-header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Section 2: Scale Hero Gross Weight Section (Much bigger, takes primary space) */
+.terminal-hero-section {
+  flex: 3.2 1 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 24px;
+  box-sizing: border-box;
+  background: transparent;
+}
+
+.scale-reading-label {
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.reading-value-box {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 12px;
+  margin: 0;
+  line-height: 1;
+}
+
+.gross-weight-number {
+  font-size: clamp(92px, 14vh, 150px);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: var(--text-primary);
+  line-height: 1;
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: center;
+  transform-origin: center;
+  will-change: transform, color;
+}
+
+.gross-weight-unit {
+  font-size: clamp(30px, 4vh, 44px);
+  font-weight: 600;
+  color: var(--text-tertiary);
+  letter-spacing: -0.01em;
+}
+
+.scale-waveform-container {
+  width: 100%;
+  max-width: 800px;
+  height: 52px;
+  margin: 8px 0 14px;
+}
+
+#scaleSparkline {
+  width: 100%;
+  height: 52px;
+  display: block;
+}
+
+.scale-quick-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 6px;
+}
+
+.scale-quick-actions .apple-btn {
+  height: 38px;
+  padding: 0 20px;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+}
+
+/* Section 3: Dual Weights (Comfortable & Sleek) */
+.terminal-dual-weights-section {
+  flex: 0 0 86px;
+  height: 86px;
+  min-height: 86px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 6px 36px;
+  box-sizing: border-box;
+  background: transparent;
+}
+
+.terminal-weight-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 5px;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+.terminal-weight-col.tube-col {
+  padding: 0 24px;
+}
+
+.terminal-weight-col.net-col {
+  padding: 0 24px;
+}
+
+.terminal-col-header {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.terminal-col-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--text-tertiary);
+}
+
+.terminal-col-title {
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.tube-edit-box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.tube-input-wrapper {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+/* Prominent Visible +- Stepper Buttons (Compact) */
+.tube-step-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid var(--border-medium);
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  flex-shrink: 0;
+  box-shadow: var(--shadow-sm);
+}
+
+.tube-step-btn:hover {
+  background: var(--bg-elevated);
+  border-color: var(--border-focus);
+  color: var(--text-primary);
+  transform: scale(1.08);
+}
+
+.tube-step-btn:active {
+  transform: scale(0.92);
+  background: var(--bg-secondary);
+}
+
+.tube-live-input {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 24px;
+  font-weight: 700;
+  width: 92px;
+  height: 36px;
+  padding: 2px 6px;
+  letter-spacing: -0.02em;
+  text-align: center;
+  transition: all var(--transition-fast);
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+/* Hide native number spinner arrows */
+.tube-live-input::-webkit-outer-spin-button,
+.tube-live-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.tube-live-input:focus {
+  outline: none;
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 2px var(--border-glow);
+  background: var(--bg-elevated);
+}
+
+.weight-unit-badge {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  letter-spacing: -0.01em;
+}
+
+.net-live-box {
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 6px;
+}
+
+.net-live-number {
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+  line-height: 1;
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: center;
+  transform-origin: center;
+  will-change: transform, color;
+  transition: color var(--transition-fast), transform var(--transition-fast);
+}
+
+.metric-updated-pulse {
+  animation: metricPulse 0.35s cubic-bezier(0.2, 0.9, 0.4, 1);
+}
+
+@keyframes metricPulse {
+  0% { transform: scale(1.04); color: var(--apple-blue); }
+  100% { transform: scale(1); color: inherit; }
+}
+
+/* ==========================================================================
+   Live Scale Interactive Number Hit & Zoom Animations (Gain / Loss / Tare)
+   ========================================================================== */
+
+@keyframes numberHitGain {
+  0% {
+    transform: scale(1.085);
+    color: var(--apple-green) !important;
+    text-shadow: 0 0 16px rgba(48, 209, 88, 0.7), 0 0 28px rgba(48, 209, 88, 0.35);
+    filter: drop-shadow(0 2px 8px rgba(48, 209, 88, 0.3));
+  }
+  40% {
+    transform: scale(1.035);
+    color: var(--apple-green) !important;
+    text-shadow: 0 0 8px rgba(48, 209, 88, 0.4);
+  }
+  100% {
+    transform: scale(1);
+    color: inherit;
+    text-shadow: none;
+    filter: none;
+  }
+}
+
+@keyframes numberHitLoss {
+  0% {
+    transform: scale(1.085);
+    color: var(--apple-red) !important;
+    text-shadow: 0 0 16px rgba(255, 69, 58, 0.7), 0 0 28px rgba(255, 69, 58, 0.35);
+    filter: drop-shadow(0 2px 8px rgba(255, 69, 58, 0.3));
+  }
+  40% {
+    transform: scale(1.035);
+    color: var(--apple-red) !important;
+    text-shadow: 0 0 8px rgba(255, 69, 58, 0.4);
+  }
+  100% {
+    transform: scale(1);
+    color: inherit;
+    text-shadow: none;
+    filter: none;
+  }
+}
+
+@keyframes numberTareSettle {
+  0% {
+    transform: scale(1.10);
+    color: var(--apple-blue) !important;
+    text-shadow: 0 0 22px rgba(10, 132, 255, 0.8), 0 0 40px rgba(10, 132, 255, 0.35);
+    filter: drop-shadow(0 0 10px rgba(10, 132, 255, 0.4));
+  }
+  50% {
+    transform: scale(0.97);
+    color: var(--apple-blue) !important;
+    text-shadow: 0 0 10px rgba(10, 132, 255, 0.5);
+  }
+  100% {
+    transform: scale(1);
+    color: inherit;
+    text-shadow: none;
+    filter: none;
+  }
+}
+
+@keyframes tareCalibratedGlow {
+  0% {
+    box-shadow: 0 0 0 4px var(--border-glow), 0 0 20px rgba(10, 132, 255, 0.6);
+    border-color: var(--apple-blue);
+  }
+  100% {
+    box-shadow: none;
+    border-color: var(--border-medium);
+  }
+}
+
+.num-hit-gain {
+  display: inline-block !important;
+  transform-origin: center !important;
+  will-change: transform, color, text-shadow !important;
+  animation: numberHitGain 0.32s cubic-bezier(0.18, 0.9, 0.32, 1.35) forwards !important;
+}
+
+.num-hit-loss {
+  display: inline-block !important;
+  transform-origin: center !important;
+  will-change: transform, color, text-shadow !important;
+  animation: numberHitLoss 0.32s cubic-bezier(0.18, 0.9, 0.32, 1.35) forwards !important;
+}
+
+.num-tare-settle {
+  display: inline-block !important;
+  transform-origin: center !important;
+  will-change: transform, color, text-shadow !important;
+  animation: numberTareSettle 0.55s cubic-bezier(0.2, 0.9, 0.3, 1.25) forwards !important;
+}
+
+.reading-stability.tare-calibrated-flash {
+  animation: tareCalibratedGlow 0.8s ease-out;
+}
+
+.tube-live-input.num-hit-gain {
+  border-color: var(--apple-green) !important;
+  box-shadow: 0 0 0 2px var(--apple-green-subtle), 0 0 12px rgba(48, 209, 88, 0.3) !important;
+}
+
+.tube-live-input.num-hit-loss {
+  border-color: var(--apple-red) !important;
+  box-shadow: 0 0 0 2px var(--apple-red-subtle), 0 0 12px rgba(255, 69, 58, 0.3) !important;
+}
+
+[data-theme="light"] .num-hit-gain {
+  color: var(--apple-green) !important;
+  text-shadow: 0 0 10px rgba(40, 167, 69, 0.35) !important;
+}
+
+[data-theme="light"] .num-hit-loss {
+  color: var(--apple-red) !important;
+  text-shadow: 0 0 10px rgba(211, 47, 47, 0.35) !important;
+}
+
+[data-theme="light"] .num-tare-settle {
+  color: var(--apple-blue) !important;
+  text-shadow: 0 0 12px rgba(0, 113, 227, 0.4) !important;
+}
+
+/* ==========================================================================
+   Rolling Digit Odometer Ticker Slot Machine Effect
+   ========================================================================== */
+
+.ticker-slot {
+  display: inline-block;
+  height: 1.04em;
+  line-height: 1.04em;
+  overflow: hidden;
+  position: relative;
+  vertical-align: -0.04em;
+  font-variant-numeric: tabular-nums;
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 14%,
+    black 86%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 14%,
+    black 86%,
+    transparent 100%
+  );
+}
+
+.ticker-column {
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.28s cubic-bezier(0.18, 0.9, 0.32, 1.25);
+  will-change: transform;
+}
+
+.ticker-digit-val {
+  height: 1.04em;
+  line-height: 1.04em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  box-sizing: border-box;
+}
+
+.ticker-separator {
+  display: inline-block;
+  line-height: 1.04em;
+  vertical-align: -0.04em;
+  font-variant-numeric: tabular-nums;
+  padding: 0 0.02em;
+}
+
+.weight-unit-badge.net-unit {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+}
+
+/* Section 4: 3 Metrics Row (Prominent, High-Legibility & Cleanly Centered) */
+.terminal-metrics-section {
+  flex: 0 0 92px;
+  height: 92px;
+  min-height: 92px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto 1fr;
+  align-items: center;
+  padding: 6px 36px;
+  box-sizing: border-box;
+  background: transparent;
+}
+
+.terminal-metric-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 6px;
+  padding: 0 16px;
+  box-sizing: border-box;
+}
+
+.terminal-metric-label {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+  font-weight: 700;
+  text-align: center;
+}
+
+.terminal-metric-value {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 6px;
+  line-height: 1.1;
+  text-align: center;
+}
+
+.terminal-metric-value span:first-child {
+  display: inline-block;
+  transform-origin: center;
+  will-change: transform, color;
+}
+
+.terminal-metric-unit {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+}
+
+.terminal-metric-note {
+  font-size: 10px;
+  color: var(--text-tertiary);
+  text-align: center;
+  max-width: 100%;
+}
+
+/* ==========================================================================
+   Telemetry & Yield Insights (Right Column)
+   ========================================================================== */
+
+.telemetry-column {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.metric-highlight-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.metric-tile {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  transition: all var(--transition-fast);
+}
+
+.metric-tile:hover {
+  border-color: var(--border-medium);
+  transform: translateY(-1px);
+}
+
+.metric-tile-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-tertiary);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.metric-tile-value {
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.metric-tile-unit {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-tertiary);
+}
+
+.metric-tile-note {
+  font-size: 11px;
+  color: var(--text-tertiary);
+}
+
+/* Roll Details & Spec Verification Card */
+.spec-details-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.spec-item-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border-subtle);
+  font-size: 13px;
+}
+
+.spec-item-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.spec-item-name {
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.spec-item-val {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* Next Roll Sequence Bar */
+.roll-session-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.roll-input-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.form-group-apple {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-label-apple {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-tertiary);
+}
+
+.form-input-apple {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 13px;
+  padding: 8px 12px;
+  transition: all var(--transition-fast);
+}
+
+.form-input-apple:focus {
+  outline: none;
+  border-color: var(--apple-blue);
+  box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.2);
+}
+
+/* Big Action Button to Log Roll */
+.btn-log-roll-hero {
+  width: 100%;
+  padding: 14px 20px;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  border-radius: var(--radius-md);
+  box-shadow: 0 8px 24px rgba(10, 132, 255, 0.45);
+}
+
+/* ==========================================================================
+   Fabric Types Management Tab
+   ========================================================================== */
+
+.tab-header-flex {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.tab-headline {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.tab-headline h1 {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+}
+
+.tab-headline p {
+  font-size: 13px;
+  color: var(--text-tertiary);
+}
+
+/* Search and Filter toolbar */
+.apple-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 22px;
+  flex-wrap: wrap;
+}
+
+.search-input-wrapper {
+  position: relative;
+  flex: 1;
+  min-width: 260px;
+}
+
+.search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-tertiary);
+  pointer-events: none;
+}
+
+.apple-search-field {
+  width: 100%;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 9px 12px 9px 36px;
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 13px;
+  transition: all var(--transition-fast);
+}
+
+.apple-search-field:focus {
+  outline: none;
+  border-color: var(--apple-blue);
+  box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.2);
+  background: var(--bg-card-hover);
+}
+
+.category-filter-pills {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  overflow-x: auto;
+}
+
+.filter-pill {
+  appearance: none;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.filter-pill:hover {
+  background: var(--bg-card-hover);
+  color: var(--text-primary);
+}
+
+.filter-pill.active {
+  background: var(--apple-blue);
+  color: #fff;
+  border-color: var(--apple-blue);
+}
+
+/* Fabric Cards Grid */
+.fabric-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+.fabric-card-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: all var(--transition-fast);
+  position: relative;
+}
+
+.fabric-card-item:hover {
+  border-color: var(--border-medium);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.fabric-card-item.selected-active {
+  border-color: var(--apple-blue);
+  box-shadow: 0 0 0 2px var(--apple-blue), var(--shadow-glow-blue);
+}
+
+.fabric-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.fabric-card-title-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.fabric-card-swatch {
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.fabric-card-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+.fabric-card-code {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--apple-blue);
+  text-transform: uppercase;
+}
+
+.fabric-spec-grid-mini {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  background: var(--bg-glass-subtle);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+}
+
+.mini-spec {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.mini-spec-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-tertiary);
+}
+
+.mini-spec-val {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.mini-spec-val.tube-val {
+  color: var(--apple-orange);
+}
+
+.fabric-card-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+/* ==========================================================================
+   Inventory & Log Tab
+   ========================================================================== */
+
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+@media (max-width: 900px) {
+  .kpi-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.kpi-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.kpi-title {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-tertiary);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.kpi-value {
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+}
+
+.kpi-subtext {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+/* Inventory Table */
+.apple-table-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.table-toolbar {
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-subtle);
+  background: var(--bg-secondary);
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.table-container {
+  overflow-x: auto;
+  width: 100%;
+}
+
+.apple-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 13px;
+}
+
+.apple-table th {
+  background: var(--bg-secondary);
+  padding: 12px 18px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-tertiary);
+  border-bottom: 1px solid var(--border-subtle);
+  white-space: nowrap;
+}
+
+.apple-table td {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+.apple-table tr:hover td {
+  background: var(--bg-card-hover);
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+}
+
+.status-badge.pass {
+  background: var(--apple-green-subtle);
+  color: var(--apple-green);
+  border: 1px solid rgba(48, 209, 88, 0.3);
+}
+
+.status-badge.warning {
+  background: var(--apple-orange-subtle);
+  color: var(--apple-orange);
+  border: 1px solid rgba(255, 159, 10, 0.3);
+}
+
+.status-badge.fail {
+  background: var(--apple-red-subtle);
+  color: var(--apple-red);
+  border: 1px solid rgba(255, 69, 58, 0.3);
+}
+
+/* Empty State */
+.empty-state {
+  padding: 60px 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  color: var(--text-tertiary);
+}
+
+.empty-state-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-full);
+  background: var(--bg-elevated);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  font-size: 24px;
+}
+
+/* ==========================================================================
+   Apple Modals & Dialogs
+   ========================================================================== */
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: var(--modal-blur);
+  -webkit-backdrop-filter: var(--modal-blur);
+  z-index: 500;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fadeIn 0.2s var(--ease-apple);
+}
+
+.modal-backdrop.open {
+  display: flex;
+}
+
+.apple-modal {
+  background: var(--bg-glass-strong);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  max-width: 580px;
+  width: 100%;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: modalPop 0.3s var(--ease-spring);
+}
+
+@keyframes modalPop {
+  0% { transform: scale(0.95); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.modal-header {
+  padding: 18px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.modal-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+.modal-body {
+  padding: 24px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.modal-footer {
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  border-top: 1px solid var(--border-subtle);
+  background: var(--bg-secondary);
+}
+
+/* Label print simulation preview */
+.roll-label-preview {
+  background: #ffffff;
+  color: #111;
+  border-radius: var(--radius-md);
+  padding: 20px;
+  box-shadow: var(--shadow-md);
+  font-family: monospace;
+  border: 2px dashed #999;
+}
+
+.roll-label-header {
+  border-bottom: 2px solid #111;
+  padding-bottom: 8px;
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.barcode-svg {
+  width: 100%;
+  height: 48px;
+  margin: 12px 0 6px;
+}
+
+/* ==========================================================================
+   Inline Fast Add Fabric Panel
+   ========================================================================== */
+
+.fabric-add-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+  transition: all var(--transition-normal);
+}
+
+.fabric-add-panel.collapsed {
+  display: none;
+}
+
+.inline-add-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+@media (max-width: 1024px) {
+  .inline-add-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .inline-add-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* View Mode Segmented Switcher (Table vs Cards) */
+.view-toggle-segmented {
+  display: inline-flex;
+  align-items: center;
+  background: var(--bg-secondary);
+  padding: 3px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-subtle);
+  margin-left: auto;
+}
+
+.view-toggle-btn {
+  appearance: none;
+  border: none;
+  background: transparent;
+  color: var(--text-tertiary);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 5px 12px;
+  border-radius: var(--radius-xs);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all var(--transition-fast);
+}
+
+.view-toggle-btn:hover {
+  color: var(--text-primary);
+}
+
+.view-toggle-btn.active {
+  background: var(--bg-card-hover);
+  color: var(--text-primary);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  font-weight: 600;
+}
+
+[data-theme="light"] .view-toggle-btn.active {
+  background: #ffffff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+/* ==========================================================================
+   Fabric Specifications Table Styles
+   ========================================================================== */
+
+.fabric-profile-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.fabric-mini-swatch {
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.fabric-profile-meta {
+  display: flex;
+  flex-direction: column;
+}
+
+.fabric-name-txt {
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+
+.fabric-code-txt {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--apple-blue);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* Change Fabric Type / Category Interactive Dropdown */
+.fabric-category-select-pill {
+  appearance: none;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-full);
+  padding: 5px 26px 5px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  outline: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.6)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  transition: all var(--transition-fast);
+}
+
+[data-theme="light"] .fabric-category-select-pill {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='rgba(0,0,0,0.6)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+}
+
+.fabric-category-select-pill:hover,
+.fabric-category-select-pill:focus {
+  border-color: var(--apple-blue);
+  box-shadow: 0 0 0 2px rgba(10, 132, 255, 0.25);
+}
+
+/* Tube Tare Subtraction Badge in Table */
+.table-tube-tare-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 700;
+  color: var(--apple-orange);
+  background: rgba(255, 159, 10, 0.12);
+  padding: 2px 8px;
+  border-radius: var(--radius-xs);
+  border: 1px solid rgba(255, 159, 10, 0.25);
+  font-size: 12px;
+}
+
+/* Table Row Actions */
+.table-actions-cell {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.btn-table-use {
+  background: var(--apple-blue-subtle);
+  color: var(--apple-blue);
+  border: 1px solid rgba(10, 132, 255, 0.3);
+  padding: 5px 11px;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.btn-table-use:hover {
+  background: var(--apple-blue);
+  color: #fff;
+  border-color: var(--apple-blue);
+}
+
+.btn-table-use.active-now {
+  background: var(--apple-green-subtle);
+  color: var(--apple-green);
+  border-color: rgba(48, 209, 88, 0.3);
+  cursor: default;
+}
+
+.btn-table-action-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-xs);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.btn-table-action-icon:hover {
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  border-color: var(--border-medium);
+}
+
+.btn-table-action-icon.delete:hover {
+  background: var(--apple-red-subtle);
+  color: var(--apple-red);
+  border-color: rgba(255, 69, 58, 0.3);
+}

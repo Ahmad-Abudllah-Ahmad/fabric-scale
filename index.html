@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FabricScale Pro — Industrial Weight & Inventory Station</title>
+  <meta name="description" content="Professional Apple-inspired Fabric Weight Scale Dashboard with real-time digital scale connection, core tube tare compensation, and inventory tracking.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/apple-theme.css">
+  <link rel="stylesheet" href="./css/components.css">
+</head>
+<body>
+  <div class="app-wrapper">
+    <!-- Apple Top Navigation Bar (macOS Sonoma / iPadOS Style) -->
+    <header class="apple-navbar">
+      <!-- Apple Segmented Navigation Switcher -->
+      <nav class="apple-segmented-tabs" role="tablist" aria-label="Main Navigation">
+        <button class="tab-btn active" data-tab="live-scale" role="tab" id="navTabLiveScale">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20M7 8l10 8M17 8L7 16"/></svg>
+          Live Scale &amp; Tare
+        </button>
+        <button class="tab-btn" data-tab="fabric-types" role="tab" id="navTabFabricTypes">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          Fabric Types &amp; Specs
+        </button>
+        <button class="tab-btn" data-tab="inventory" role="tab" id="navTabInventory">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          Inventory &amp; Logs
+        </button>
+      </nav>
+
+      <!-- Right Actions: Theme Toggle -->
+      <div class="navbar-actions">
+        <!-- Theme Toggle (Dark / Light) -->
+        <button class="icon-btn" id="themeToggleBtn" title="Toggle Theme" aria-label="Toggle Theme">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Workspace Container -->
+    <main class="main-container">
+      
+      <!-- ===================================================================
+           TAB 1: LIVE SCALE & INSPECTION DASHBOARD
+           =================================================================== -->
+      <section id="tab-live-scale" class="tab-pane active" role="tabpanel">
+        
+        <!-- Unified Full-Screen Live Scale Terminal (No nested components; sleek divider lines) -->
+        <div class="live-scale-terminal main-scale-component" id="liveScaleTerminal">
+          
+          <!-- Section 1: Top Bar (Stability Badge, Unit Selector, Switch Fabric Dropdown) -->
+          <div class="terminal-header-bar">
+            <div class="reading-stability" id="readingStabilityBadge">
+              <span class="indicator-dot"></span>
+              <span id="readingStabilityText">Stable</span>
+            </div>
+
+            <div class="terminal-header-right">
+              <div class="unit-selector" role="radiogroup" aria-label="Scale Unit">
+                <button class="unit-btn active" data-unit="kg">KG</button>
+                <button class="unit-btn" data-unit="lb">LB</button>
+              </div>
+
+              <!-- Switch Fabric Type Button (Next to KG / LB) -->
+              <div class="fabric-dropdown-wrapper" id="fabricDropdownWrapper">
+                <button class="fabric-dropdown-toggle-btn" id="fabricDropdownToggleBtn" type="button" aria-haspopup="true" aria-expanded="false" title="Switch Fabric Type">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="switch-icon"><path d="m16 3 4 4-4 4"/><path d="M20 7H4"/><path d="m8 21-4-4 4-4"/><path d="M4 17h16"/></svg>
+                  <span class="btn-label-text">Switch Fabric Type:</span>
+                  <span class="active-fabric-badge" id="activeFabricPillCode">COT-TWL-280</span>
+                  <svg class="dropdown-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+
+                <!-- Popover Dropdown Menu (Opens on Click) -->
+                <div id="fabricDropdownMenu" class="apple-dropdown-menu" role="menu" aria-label="Fabric Types">
+                  <div class="dropdown-menu-header">
+                    <span class="dropdown-menu-title">Select Fabric Specification</span>
+                    <div class="dropdown-search-box">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                      <input type="text" id="fabricDropdownSearchInput" placeholder="Filter fabric by name, code or GSM..." autocomplete="off">
+                    </div>
+                  </div>
+                  <div class="dropdown-fabric-list" id="fabricDropdownList">
+                    <!-- Populated dynamically via JS -->
+                  </div>
+                  <div class="dropdown-menu-footer">
+                    <button type="button" class="dropdown-footer-link" id="dropdownManageFabricsBtn">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                      Manage &amp; Add Fabric Types
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sleek Divider Line 1 -->
+          <div class="terminal-h-divider"></div>
+
+          <!-- Section 2: Scale Hero Gross Weight Section -->
+          <div class="terminal-hero-section">
+            <div class="scale-reading-label">
+              Gross Weight
+            </div>
+
+            <div class="reading-value-box">
+              <span class="gross-weight-number tabular-nums" id="grossWeightVal">25.71</span>
+              <span class="gross-weight-unit" id="grossWeightUnit">kg</span>
+            </div>
+
+            <!-- Real-time Sparkline Waveform -->
+            <div class="scale-waveform-container" title="Real-time Load Cell Waveform">
+              <canvas id="scaleSparkline"></canvas>
+            </div>
+
+            <!-- Quick Physical / Virtual Controls -->
+            <div class="scale-quick-actions">
+              <button class="apple-btn apple-btn-secondary" id="zeroScaleBtn" title="Zero current scale tare">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v8"/></svg>
+                Zero (Tare)
+              </button>
+              <button class="apple-btn apple-btn-secondary" id="simulatePlaceRollBtn" title="Simulate placing fabric roll on scale">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                Simulate Roll Load
+              </button>
+            </div>
+          </div>
+
+          <!-- Sleek Divider Line 2 -->
+          <div class="terminal-h-divider"></div>
+
+          <!-- Section 3: Dual Weights (HOLE TUBE WEIGHT & PURE NET FABRIC WEIGHT) -->
+          <div class="terminal-dual-weights-section">
+            <!-- Left: Hole Tube Weight (Centered with visible +- stepper buttons) -->
+            <div class="terminal-weight-col tube-col">
+              <div class="terminal-col-header">
+                <span class="terminal-col-dot"></span>
+                <span class="terminal-col-title">HOLE TUBE WEIGHT:</span>
+              </div>
+              <div class="tube-edit-box">
+                <button type="button" class="tube-step-btn" id="tubeMinusBtn" title="Decrease tube tare (-0.05)" aria-label="Decrease Tube Weight">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                </button>
+                <div class="tube-input-wrapper">
+                  <input type="number" step="0.01" min="0" max="20" class="tube-live-input tabular-nums" id="tubeWeightInput" value="0.85" aria-label="Hole Tube Weight">
+                  <span class="weight-unit-badge" id="tubeUnitLabel">kg</span>
+                </div>
+                <button type="button" class="tube-step-btn" id="tubePlusBtn" title="Increase tube tare (+0.05)" aria-label="Increase Tube Weight">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- Sleek Vertical Line Divider -->
+            <div class="terminal-v-divider"></div>
+
+            <!-- Right: Pure Net Fabric Weight (Centered) -->
+            <div class="terminal-weight-col net-col">
+              <div class="terminal-col-header">
+                <span class="terminal-col-dot"></span>
+                <span class="terminal-col-title">PURE NET FABRIC WEIGHT:</span>
+              </div>
+              <div class="net-live-box">
+                <span class="net-live-number tabular-nums" id="netWeightVal">24.86</span>
+                <span class="weight-unit-badge net-unit" id="netWeightUnit">kg</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sleek Divider Line 3 -->
+          <div class="terminal-h-divider"></div>
+
+          <!-- Section 4: 3 Metrics Row (Calculated Length | Equivalent Yardage | Fabric Standard GSM) -->
+          <div class="terminal-metrics-section">
+            <div class="terminal-metric-cell">
+              <span class="terminal-metric-label">Calculated Length (m)</span>
+              <div class="terminal-metric-value">
+                <span id="calcMetersVal" class="tabular-nums">60.00</span>
+                <span class="terminal-metric-unit">meters</span>
+              </div>
+            </div>
+
+            <!-- Sleek Vertical Line Divider -->
+            <div class="terminal-v-divider"></div>
+
+            <div class="terminal-metric-cell">
+              <span class="terminal-metric-label">EQUIVALENT YARDAGE (US)</span>
+              <div class="terminal-metric-value">
+                <span id="calcYardsVal" class="tabular-nums">65.62</span>
+                <span class="terminal-metric-unit">yards</span>
+              </div>
+            </div>
+
+            <!-- Sleek Vertical Line Divider -->
+            <div class="terminal-v-divider"></div>
+
+            <div class="terminal-metric-cell">
+              <span class="terminal-metric-label">Fabric Standard GSM</span>
+              <div class="terminal-metric-value">
+                <span id="rollGsmYieldVal" class="tabular-nums">280</span>
+                <span class="terminal-metric-unit">g/m²</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ===================================================================
+           TAB 2: FABRIC TYPES & DETAILS MANAGEMENT
+           "here user can add the Add New Fabric Type and show it in below table where user can edit and changfe the type of fabric and also delete it"
+           =================================================================== -->
+      <section id="tab-fabric-types" class="tab-pane" role="tabpanel">
+        <div class="tab-header-flex">
+          <div class="tab-headline">
+            <h1>Fabric Specifications &amp; Catalog</h1>
+          </div>
+
+          <div>
+            <button class="apple-btn apple-btn-primary" id="openAddFabricModalBtn">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Add New Fabric Type
+            </button>
+          </div>
+        </div>
+
+
+
+        <!-- Apple Toolbar: Search, Category Pills & View Switcher -->
+        <div class="apple-toolbar">
+          <div class="search-input-wrapper">
+            <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" class="apple-search-field" id="fabricSearchInput" placeholder="Search by fabric name, code, composition, or category...">
+          </div>
+
+          <div class="category-filter-pills" role="radiogroup" aria-label="Category Filter">
+            <button class="filter-pill active" data-category="all">All Fabrics</button>
+            <button class="filter-pill" data-category="Woven">Woven</button>
+            <button class="filter-pill" data-category="Denim">Denim</button>
+            <button class="filter-pill" data-category="Knit">Knit</button>
+            <button class="filter-pill" data-category="Silk">Silk</button>
+            <button class="filter-pill" data-category="Linen">Linen</button>
+            <button class="filter-pill" data-category="Technical">Technical</button>
+          </div>
+
+          <!-- View Mode Toggle: Table View (default) vs Cards View -->
+          <div class="view-toggle-segmented" role="radiogroup" aria-label="View Switcher">
+            <button class="view-toggle-btn active" data-view="table" id="viewToggleTable" title="Table View">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+              Table View
+            </button>
+            <button class="view-toggle-btn" data-view="cards" id="viewToggleCards" title="Cards View">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+              Cards View
+            </button>
+          </div>
+        </div>
+
+        <!-- ===============================================================
+             FABRIC SPECIFICATIONS TABLE
+             "show it in below table where user can edit and changfe the type of fabric and also delete it"
+             =============================================================== -->
+        <div class="apple-table-card" id="fabricTableCard" style="margin-bottom: 24px;">
+          <div class="table-container">
+            <table class="apple-table" id="fabricTable">
+              <thead>
+                <tr>
+                  <th style="width: 280px;">Fabric Profile</th>
+                  <th style="width: 170px;">Type of Fabric</th>
+                  <th>Standard GSM</th>
+                  <th>Roll Width</th>
+                  <th>Hole Tube Tare</th>
+                  <th>Roll Target Spec</th>
+                  <th>Live Scale</th>
+                  <th style="text-align: right; width: 220px;">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="fabricTableBody">
+                <!-- Populated dynamically via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Fabric Cards Grid (Alternative view) -->
+        <div class="fabric-cards-grid" id="fabricCardsContainer" style="display: none;">
+          <!-- Populated dynamically via JS -->
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           TAB 3: INVENTORY & WEIGHED ROLLS HISTORY
+           =================================================================== -->
+      <section id="tab-inventory" class="tab-pane" role="tabpanel">
+        <div class="tab-header-flex">
+          <div class="tab-headline">
+            <h1>Weighed Rolls Inventory &amp; Quality Logs</h1>
+          </div>
+
+          <div style="display: flex; gap: 10px;">
+            <button class="apple-btn apple-btn-secondary" id="exportCsvBtn">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Export CSV
+            </button>
+            <button class="apple-btn apple-btn-danger" id="clearInventoryBtn" title="Clear all logs">
+              Clear Logs
+            </button>
+          </div>
+        </div>
+
+        <!-- KPI Metrics Summary Row -->
+        <div class="kpi-row">
+          <div class="kpi-card">
+            <div class="kpi-title">
+              Total Rolls Weighed
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+            </div>
+            <div class="kpi-value tabular-nums" id="kpiTotalRolls">4</div>
+            <div class="kpi-subtext">Active batch sessions</div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-title">
+              Total Net Fabric
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg>
+            </div>
+            <div class="kpi-value tabular-nums" id="kpiTotalNetKg">94.47 kg</div>
+            <div class="kpi-subtext">Pure textile weight (excl. tubes)</div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-title">
+              Avg Roll Net Weight
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>
+            </div>
+            <div class="kpi-value tabular-nums" id="kpiAvgNetKg">23.62 kg</div>
+            <div class="kpi-subtext">Per roll average</div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-title">
+              QC Pass Rate
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div class="kpi-value tabular-nums" id="kpiPassRate" style="color: var(--apple-green);">75.0%</div>
+            <div class="kpi-subtext">Within tolerance spec</div>
+          </div>
+        </div>
+
+        <!-- Inventory Table Card -->
+        <div class="apple-table-card">
+          <div class="table-toolbar">
+            <div class="search-input-wrapper" style="max-width: 380px;">
+              <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input type="text" class="apple-search-field" id="inventorySearchInput" placeholder="Filter by roll ID, lot #, fabric code, or operator...">
+            </div>
+            <div style="font-size: 12px; color: var(--text-tertiary);">
+              Showing measured rolls with hole tube deduction
+            </div>
+          </div>
+
+          <div class="table-container">
+            <table class="apple-table">
+              <thead>
+                <tr>
+                  <th>Roll ID</th>
+                  <th>Fabric Spec</th>
+                  <th>Gross Wt</th>
+                  <th>Tube Tare</th>
+                  <th>Net Pure Wt</th>
+                  <th>Calc Length</th>
+                  <th>Variance</th>
+                  <th>QC Status</th>
+                  <th>Lot / Operator</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="inventoryTableBody">
+                <!-- Injected dynamically via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+
+    </main>
+
+    <!-- ===================================================================
+         MODAL 1: ADD / EDIT FABRIC TYPE SPECIFICATION
+         =================================================================== -->
+    <div class="modal-backdrop" id="fabricModal" role="dialog" aria-modal="true">
+      <div class="apple-modal">
+        <div class="modal-header">
+          <h2 class="modal-title" id="fabricModalTitle">New Fabric Specification</h2>
+          <button class="icon-btn" id="closeFabricModalBtn" aria-label="Close modal">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+
+        <form id="fabricForm">
+          <div class="modal-body">
+            <div class="roll-input-group">
+              <div class="form-group-apple">
+                <label class="form-label-apple" for="fabricCodeInput">Fabric Code / SKU *</label>
+                <input type="text" class="form-input-apple" id="fabricCodeInput" required placeholder="e.g. COT-POP-140">
+              </div>
+              <div class="form-group-apple">
+                <label class="form-label-apple" for="fabricCategorySelect">Category *</label>
+                <select class="form-input-apple" id="fabricCategorySelect" required>
+                  <option value="Woven">Woven</option>
+                  <option value="Denim">Denim</option>
+                  <option value="Knit">Knit</option>
+                  <option value="Silk">Silk</option>
+                  <option value="Linen">Linen</option>
+                  <option value="Technical">Technical</option>
+                  <option value="Wool">Wool</option>
+                  <option value="Blend">Blend</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group-apple">
+              <label class="form-label-apple" for="fabricNameInput">Fabric Name *</label>
+              <input type="text" class="form-input-apple" id="fabricNameInput" required placeholder="e.g. 100% Combed Cotton Poplin">
+            </div>
+
+            <div class="form-group-apple">
+              <label class="form-label-apple" for="fabricCompositionInput">Composition</label>
+              <input type="text" class="form-input-apple" id="fabricCompositionInput" placeholder="e.g. 100% Long-Staple Cotton">
+            </div>
+
+            <!-- Textile Parameters -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+              <div class="form-group-apple">
+                <label class="form-label-apple" for="fabricGsmInput">Standard GSM (g/m²) *</label>
+                <input type="number" step="1" min="10" max="1500" class="form-input-apple" id="fabricGsmInput" required value="200">
+              </div>
+              <div class="form-group-apple">
+                <label class="form-label-apple" for="fabricWidthInput">Roll Width (meters) *</label>
+                <input type="number" step="0.01" min="0.3" max="5.0" class="form-input-apple" id="fabricWidthInput" required value="1.50">
+              </div>
+            </div>
+
+            <!-- Tube Tare & Target Roll Spec -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+              <div class="form-group-apple">
+                <label class="form-label-apple" for="fabricDefaultTube">Default Hole Tube Tare (kg) *</label>
+                <input type="number" step="0.01" min="0" max="10" class="form-input-apple" id="fabricDefaultTube" required value="0.85">
+                <span style="font-size: 10px; color: var(--text-tertiary);">Subtracted from gross weight</span>
+              </div>
+              <div class="form-group-apple">
+                <label class="form-label-apple" for="fabricTargetLength">Standard Roll Length (m) *</label>
+                <input type="number" step="1" min="1" max="1000" class="form-input-apple" id="fabricTargetLength" required value="50">
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+              <div class="form-group-apple">
+                <label class="form-label-apple" for="fabricTolerance">Allowed Tolerance (&plusmn;%)</label>
+                <input type="number" step="0.1" min="0.5" max="20" class="form-input-apple" id="fabricTolerance" value="3.5">
+              </div>
+              <div class="form-group-apple">
+                <label class="form-label-apple" for="fabricColorHex">Swatch Theme Color</label>
+                <input type="color" class="form-input-apple" id="fabricColorHex" value="#3b82f6" style="height: 38px; padding: 2px 6px;">
+              </div>
+            </div>
+
+            <div class="form-group-apple">
+              <label class="form-label-apple" for="fabricNotesInput">Inspection Notes / Specifications</label>
+              <textarea class="form-input-apple" id="fabricNotesInput" rows="2" placeholder="Finishing, yarn count, supplier details..."></textarea>
+            </div>
+          </div>
+
+          <div class="modal-footer" style="justify-content: space-between;">
+            <button type="button" class="apple-btn apple-btn-danger" id="deleteFabricModalBtn" style="display: none;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+              Delete Fabric Type
+            </button>
+            <div style="display: flex; gap: 10px; margin-left: auto;">
+              <button type="button" class="apple-btn apple-btn-secondary" id="cancelFabricModalBtn">Cancel</button>
+              <button type="submit" class="apple-btn apple-btn-primary">Save Fabric Specification</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ===================================================================
+         MODAL 2: QUICK FABRIC SELECTOR (From Live Scale)
+         =================================================================== -->
+    <div class="modal-backdrop" id="quickSelectModal" role="dialog" aria-modal="true">
+      <div class="apple-modal" style="max-width: 500px;">
+        <div class="modal-header">
+          <h2 class="modal-title">Select Active Fabric</h2>
+          <button class="icon-btn" id="closeQuickSelectBtn" aria-label="Close">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+        <div class="modal-body" id="quickSelectFabricList" style="max-height: 400px; gap: 8px;">
+          <!-- Injected via JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================================================================
+         MODAL 3: THERMAL ROLL QC LABEL PREVIEW & PRINT
+         =================================================================== -->
+    <div class="modal-backdrop" id="printLabelModal" role="dialog" aria-modal="true">
+      <div class="apple-modal" style="max-width: 520px;">
+        <div class="modal-header">
+          <h2 class="modal-title">Roll QC Pass Label</h2>
+          <button class="icon-btn" id="closeLabelModalBtn" aria-label="Close">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+        <div class="modal-body" id="labelContent">
+          <!-- Injected via JS -->
+        </div>
+        <div class="modal-footer">
+          <button class="apple-btn apple-btn-secondary" onclick="document.getElementById('printLabelModal').classList.remove('open')">Done</button>
+          <button class="apple-btn apple-btn-primary" id="printLabelActionBtn">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+            Print Barcode Label
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================================================================
+         MODAL 4: SCALE HARDWARE & SERIAL PORT SETUP
+         =================================================================== -->
+    <div class="modal-backdrop" id="scaleHardwareModal" role="dialog" aria-modal="true">
+      <div class="apple-modal" style="max-width: 540px;">
+        <div class="modal-header">
+          <div class="card-title-group">
+            <div class="brand-icon" style="width: 26px; height: 26px;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 3v18M3 12h18M5.5 5.5l13 13M18.5 5.5l-13 13"/></svg>
+            </div>
+            <h2 class="modal-title">Scale Serial Connection Setup</h2>
+          </div>
+          <button class="icon-btn" id="closeHardwareModalBtn" aria-label="Close">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+
+        <div class="modal-body">
+          <div style="background: rgba(10, 132, 255, 0.1); border: 1px solid rgba(10, 132, 255, 0.25); border-radius: var(--radius-md); padding: 14px; font-size: 13px; color: var(--text-secondary); line-height: 1.5;">
+            <strong>Hardware USB / Serial Scale:</strong><br>
+            Connect any RS-232, USB Serial (CAS, Toledo, Ohaus, A&amp;D, or Arduino digital scale). Click <em>Connect Serial Scale</em> to select your COM or USB port via Chrome's Web Serial API.
+          </div>
+
+          <div class="form-group-apple">
+            <label class="form-label-apple" for="baudRateSelect">Baud Rate (bps)</label>
+            <select class="form-input-apple" id="baudRateSelect">
+              <option value="9600" selected>9600 baud (Standard Industrial)</option>
+              <option value="19200">19200 baud</option>
+              <option value="4800">4800 baud</option>
+              <option value="115200">115200 baud</option>
+            </select>
+          </div>
+
+          <div style="padding-top: 10px; border-top: 1px solid var(--border-subtle);">
+            <div style="font-weight: 600; font-size: 13px; margin-bottom: 8px;">Interactive Weight Simulator (Test without scale)</div>
+            <div class="form-group-apple">
+              <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-secondary);">
+                <span>Adjust Test Weight:</span>
+                <strong id="simWeightSliderVal" class="tabular-nums">25.4 kg</strong>
+              </div>
+              <input type="range" min="0" max="60" step="0.2" value="25.4" id="simWeightSlider" style="width: 100%; accent-color: var(--apple-blue);">
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button class="apple-btn apple-btn-secondary" onclick="document.getElementById('scaleHardwareModal').classList.remove('open')">Use Demo Scale</button>
+          <button class="apple-btn apple-btn-primary" id="confirmSerialConnectBtn">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            Connect USB Serial Scale
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  </div>
+
+  <!-- App Scripts -->
+  <script src="./js/scale-driver.js"></script>
+  <script src="./js/fabric-store.js"></script>
+  <script src="./js/inventory-store.js"></script>
+  <script src="./js/app.js"></script>
+</body>
+</html>
