@@ -1174,7 +1174,7 @@ document.addEventListener("DOMContentLoaded", () => {
         </tr>
       `;
     } else {
-      const categories = ["Woven", "Denim", "Knit", "Silk", "Linen", "Technical", "Wool", "Blend", "Polyester"];
+      const categories = getAllCategories();
 
       filtered.forEach(fabric => {
         const isSelected = activeFabric && activeFabric.id === fabric.id;
@@ -1183,14 +1183,11 @@ document.addEventListener("DOMContentLoaded", () => {
         // Options for changing type of fabric directly in the table
         const categoryOptions = categories.map(cat => 
           `<option value="${cat}" ${fabric.category === cat ? "selected" : ""}>${cat}</option>`
-        ).join("");
+        ).join("") + `<option value="__custom__">+ Custom...</option>`;
 
         tr.innerHTML = `
           <td>
             <div class="fabric-profile-cell">
-              <div class="fabric-mini-swatch" style="background-color: ${fabric.colorHex || '#3b82f6'};">
-                <span style="font-size: 10px; font-weight: 800; color: #ffffff; letter-spacing: 0.04em;">${fabric.tag || fabric.code.slice(0, 3)}</span>
-              </div>
               <div class="fabric-profile-meta">
                 <span class="fabric-name-txt">${fabric.name}</span>
                 <span class="fabric-code-txt">${fabric.code}</span>
@@ -1236,7 +1233,15 @@ document.addEventListener("DOMContentLoaded", () => {
         // Direct Change Type of Fabric Event in table
         const catSelect = tr.querySelector(".fabric-category-select-pill");
         catSelect.addEventListener("change", (e) => {
-          const newType = e.target.value;
+          let newType = e.target.value;
+          if (newType === "__custom__") {
+            const custom = prompt("Enter custom fabric type / category:", "");
+            if (!custom || !custom.trim()) {
+              e.target.value = fabric.category;
+              return;
+            }
+            newType = custom.trim();
+          }
           window.fabricStore.changeFabricCategory(fabric.id, newType);
           showToast("Fabric Type Changed", `${fabric.name} is now classified as ${newType}.`, "success");
           syncActiveFabricDisplay();
@@ -1438,12 +1443,71 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   /* =========================================================================
-     Fabric Modal Form (Add / Edit)
+     Fabric Modal Form (Add / Edit) & Custom Categories
      ========================================================================= */
+  function getAllCategories() {
+    const base = ["Woven", "Denim", "Knit", "Silk", "Linen", "Technical", "Wool", "Blend"];
+    const set = new Set(base);
+    if (window.fabricStore) {
+      window.fabricStore.getAll().forEach(f => {
+        if (f.category) set.add(f.category);
+      });
+    }
+    return Array.from(set);
+  }
+
+  function populateCategorySelect(selectedCategory) {
+    const select = document.getElementById("fabricCategorySelect");
+    const customWrapper = document.getElementById("customCategoryWrapper");
+    const customInput = document.getElementById("customCategoryInput");
+    if (!select) return;
+
+    const categories = getAllCategories();
+    if (selectedCategory && selectedCategory !== "__custom__" && !categories.includes(selectedCategory)) {
+      categories.push(selectedCategory);
+    }
+
+    select.innerHTML = categories.map(cat => 
+      `<option value="${cat}" ${cat === selectedCategory ? "selected" : ""}>${cat}</option>`
+    ).join("") + `<option value="__custom__">+ Add Custom Type...</option>`;
+
+    if (selectedCategory === "__custom__") {
+      select.value = "__custom__";
+      if (customWrapper) customWrapper.style.display = "block";
+      if (customInput) customInput.focus();
+    } else {
+      select.value = selectedCategory || categories[0];
+      if (customWrapper) customWrapper.style.display = "none";
+      if (customInput) customInput.value = "";
+    }
+  }
+
+  // Handle Category select changes (toggle custom text field)
+  const categorySelectEl = document.getElementById("fabricCategorySelect");
+  const customCategoryWrapperEl = document.getElementById("customCategoryWrapper");
+  const customCategoryInputEl = document.getElementById("customCategoryInput");
+  if (categorySelectEl) {
+    categorySelectEl.addEventListener("change", (e) => {
+      if (e.target.value === "__custom__") {
+        if (customCategoryWrapperEl) customCategoryWrapperEl.style.display = "block";
+        if (customCategoryInputEl) {
+          customCategoryInputEl.focus();
+          customCategoryInputEl.required = true;
+        }
+      } else {
+        if (customCategoryWrapperEl) customCategoryWrapperEl.style.display = "none";
+        if (customCategoryInputEl) {
+          customCategoryInputEl.required = false;
+        }
+      }
+    });
+  }
+
   function openAddFabricModal() {
     state.editingFabricId = null;
     elements.fabricModalTitle.textContent = "New Fabric Specification";
     elements.fabricForm.reset();
+    populateCategorySelect("Woven");
     document.getElementById("fabricColorHex").value = "#3b82f6";
     document.getElementById("fabricDefaultTube").value = "0.85";
     document.getElementById("fabricTolerance").value = "3.5";
@@ -1460,7 +1524,7 @@ document.addEventListener("DOMContentLoaded", () => {
     
     document.getElementById("fabricCodeInput").value = fabric.code;
     document.getElementById("fabricNameInput").value = fabric.name;
-    document.getElementById("fabricCategorySelect").value = fabric.category;
+    populateCategorySelect(fabric.category);
     document.getElementById("fabricCompositionInput").value = fabric.composition || "";
     document.getElementById("fabricGsmInput").value = fabric.gsm;
     document.getElementById("fabricWidthInput").value = fabric.widthMeters;
@@ -1500,10 +1564,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
   elements.fabricForm.addEventListener("submit", (e) => {
     e.preventDefault();
+    let categoryValue = document.getElementById("fabricCategorySelect").value;
+    if (categoryValue === "__custom__") {
+      const customEntered = document.getElementById("customCategoryInput")?.value.trim();
+      categoryValue = customEntered || "Custom";
+    }
+
     const data = {
       code: document.getElementById("fabricCodeInput").value,
       name: document.getElementById("fabricNameInput").value,
-      category: document.getElementById("fabricCategorySelect").value,
+      category: categoryValue,
       composition: document.getElementById("fabricCompositionInput").value,
       gsm: document.getElementById("fabricGsmInput").value,
       widthMeters: document.getElementById("fabricWidthInput").value,
