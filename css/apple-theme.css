@@ -185,7 +185,7 @@ body::after {
   position: sticky;
   top: 0;
   z-index: 100;
-  height: 56px;
+  height: 64px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -199,29 +199,40 @@ body::after {
 
 .navbar-brand {
   position: absolute;
-  left: 20px;
+  left: 24px;
   display: flex;
   align-items: center;
   gap: 12px;
 }
 
 .brand-logo-img {
-  height: 38px;
+  height: 52px;
   width: auto;
-  max-width: 130px;
+  max-width: 180px;
   object-fit: contain;
-  border-radius: var(--radius-sm);
-  background: #ffffff;
-  padding: 3px 6px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.22);
-  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
   display: block;
+  filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.45));
+  transition: transform var(--transition-fast);
+}
+
+.brand-logo-img:hover {
+  transform: scale(1.04);
+}
+
+[data-theme="dark"] .brand-logo-img.logo-light {
+  display: none !important;
+}
+
+[data-theme="light"] .brand-logo-img.logo-dark {
+  display: none !important;
 }
 
 [data-theme="light"] .brand-logo-img {
-  background: #ffffff;
-  border-color: rgba(0, 0, 0, 0.08);
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.12));
 }
 
 /* macOS Window Traffic Lights */

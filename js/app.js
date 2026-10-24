@@ -855,12 +855,14 @@ document.addEventListener("DOMContentLoaded", () => {
     state.isStable = scaleState.isStable;
 
     // Stability Badge
-    if (scaleState.isStable) {
-      elements.readingStabilityBadge.className = "reading-stability";
-      elements.readingStabilityText.textContent = "Stable";
-    } else {
-      elements.readingStabilityBadge.className = "reading-stability motion";
-      elements.readingStabilityText.textContent = "Motion";
+    if (elements.readingStabilityBadge && elements.readingStabilityText) {
+      if (scaleState.isStable) {
+        elements.readingStabilityBadge.className = "reading-stability";
+        elements.readingStabilityText.textContent = "Stable";
+      } else {
+        elements.readingStabilityBadge.className = "reading-stability motion";
+        elements.readingStabilityText.textContent = "Motion";
+      }
     }
 
     // Hardware status pill in navbar (if present)

@@ -754,8 +754,8 @@ body:has(#tab-live-scale.active) .app-wrapper {
 body.view-live-scale .main-container,
 body:has(#tab-live-scale.active) .main-container {
   padding: 6px 12px 10px;
-  height: calc(100vh - 56px);
-  max-height: calc(100vh - 56px);
+  height: calc(100vh - 64px);
+  max-height: calc(100vh - 64px);
   max-width: 100% !important;
   width: 100% !important;
   margin: 0 !important;
@@ -805,7 +805,7 @@ body:has(#tab-live-scale.active) .main-container {
   height: 46px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   padding: 0 20px;
   box-sizing: border-box;
   background: transparent;
