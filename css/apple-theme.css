@@ -198,9 +198,30 @@ body::after {
 }
 
 .navbar-brand {
+  position: absolute;
+  left: 20px;
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
+}
+
+.brand-logo-img {
+  height: 38px;
+  width: auto;
+  max-width: 130px;
+  object-fit: contain;
+  border-radius: var(--radius-sm);
+  background: #ffffff;
+  padding: 3px 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.22);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  display: block;
+}
+
+[data-theme="light"] .brand-logo-img {
+  background: #ffffff;
+  border-color: rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* macOS Window Traffic Lights */
@@ -415,10 +436,11 @@ body::after {
 
 .main-container {
   flex: 1;
-  max-width: 1440px;
+  max-width: 100%;
   width: 100%;
-  margin: 0 auto;
-  padding: 24px 28px 48px;
+  margin: 0;
+  padding: 16px 20px 24px;
+  box-sizing: border-box;
 }
 
 .tab-pane {
