@@ -887,7 +887,7 @@ body:has(#tab-live-scale.active) .main-container {
   align-items: center;
   justify-content: center;
   gap: 12px;
-  margin-top: 6px;
+  margin-top: 18px;
 }
 
 .scale-quick-actions .apple-btn {
