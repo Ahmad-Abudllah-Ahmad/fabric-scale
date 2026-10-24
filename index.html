@@ -538,29 +538,7 @@
       </div>
     </div>
 
-    <!-- ===================================================================
-         MODAL 3: THERMAL ROLL QC LABEL PREVIEW & PRINT
-         =================================================================== -->
-    <div class="modal-backdrop" id="printLabelModal" role="dialog" aria-modal="true">
-      <div class="apple-modal" style="max-width: 520px;">
-        <div class="modal-header">
-          <h2 class="modal-title">Roll QC Pass Label</h2>
-          <button class="icon-btn" id="closeLabelModalBtn" aria-label="Close">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-          </button>
-        </div>
-        <div class="modal-body" id="labelContent">
-          <!-- Injected via JS -->
-        </div>
-        <div class="modal-footer">
-          <button class="apple-btn apple-btn-secondary" onclick="document.getElementById('printLabelModal').classList.remove('open')">Done</button>
-          <button class="apple-btn apple-btn-primary" id="printLabelActionBtn">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-            Print Barcode Label
-          </button>
-        </div>
-      </div>
-    </div>
+
 
     <!-- ===================================================================
          MODAL 4: SCALE HARDWARE & SERIAL PORT SETUP
@@ -620,6 +598,31 @@
     <!-- Toast Notification Container -->
     <div class="toast-container" id="toastContainer" aria-live="polite"></div>
 
+  </div>
+
+  <!-- ===================================================================
+       MODAL 3: THERMAL ROLL QC LABEL PREVIEW & PRINT
+       Placed outside app-wrapper so printing isolates only the sticker
+       =================================================================== -->
+  <div class="modal-backdrop" id="printLabelModal" role="dialog" aria-modal="true">
+    <div class="apple-modal" style="max-width: 520px;">
+      <div class="modal-header">
+        <h2 class="modal-title">Roll QC Pass Label</h2>
+        <button class="icon-btn" id="closeLabelModalBtn" aria-label="Close">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-body" id="labelContent">
+        <!-- Injected via JS -->
+      </div>
+      <div class="modal-footer">
+        <button class="apple-btn apple-btn-secondary" onclick="document.getElementById('printLabelModal').classList.remove('open')">Done</button>
+        <button class="apple-btn apple-btn-primary" id="printLabelActionBtn">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          Print Barcode Label
+        </button>
+      </div>
+    </div>
   </div>
 
   <!-- ===================================================================

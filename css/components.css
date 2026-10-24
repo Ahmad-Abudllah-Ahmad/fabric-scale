@@ -2602,6 +2602,7 @@ body:has(#tab-live-scale.active) .main-container {
     color: #000000 !important;
     margin: 0 !important;
     padding: 0 !important;
+    width: 100% !important;
     height: auto !important;
     min-height: auto !important;
     overflow: visible !important;
@@ -2609,21 +2610,20 @@ body:has(#tab-live-scale.active) .main-container {
     print-color-adjust: exact !important;
   }
 
-  /* Completely hide the application shell and background */
+  /* Completely hide the application shell, login overlay, and any other modals */
   .app-wrapper,
-  .login-page-overlay,
-  .apple-navbar,
-  .main-container,
-  .tab-pane,
+  .login-portal-overlay,
+  #loginOverlay,
   .toast-container,
   .modal-backdrop:not(#printLabelModal) {
     display: none !important;
     visibility: hidden !important;
   }
 
-  /* Unstyle modal container into transparent document layer */
+  /* Unstyle modal backdrop container so only the sticker renders */
   #printLabelModal {
     display: block !important;
+    visibility: visible !important;
     position: static !important;
     left: auto !important;
     top: auto !important;
@@ -2631,19 +2631,21 @@ body:has(#tab-live-scale.active) .main-container {
     bottom: auto !important;
     width: 100% !important;
     height: auto !important;
+    min-height: auto !important;
     background: transparent !important;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
     padding: 0 !important;
     margin: 0 !important;
     opacity: 1 !important;
-    visibility: visible !important;
     transform: none !important;
   }
 
   #printLabelModal .apple-modal {
     display: block !important;
+    visibility: visible !important;
     background: transparent !important;
+    box-shadow: none !important;
     border: none !important;
     padding: 0 !important;
     margin: 0 auto !important;
@@ -2664,6 +2666,7 @@ body:has(#tab-live-scale.active) .main-container {
 
   #printLabelModal .modal-body {
     display: block !important;
+    visibility: visible !important;
     padding: 0 !important;
     margin: 0 !important;
     overflow: visible !important;
@@ -2673,9 +2676,10 @@ body:has(#tab-live-scale.active) .main-container {
   /* Solely render the QC Barcode Sticker */
   .roll-label-preview {
     display: block !important;
+    visibility: visible !important;
     width: 105mm !important;
     max-width: 460px !important;
-    margin: 15px auto !important;
+    margin: 10px auto !important;
     padding: 20px 24px !important;
     background: #ffffff !important;
     color: #111111 !important;
