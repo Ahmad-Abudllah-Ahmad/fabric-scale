@@ -3,7 +3,7 @@
  * Connects ScaleDriver, FabricStore, and InventoryStore with an Apple Human Interface UX.
  */
 
-document.addEventListener("DOMContentLoaded", () => {
+function initApp() {
   // Application State
   const state = {
     activeTab: "live-scale",
@@ -1808,22 +1808,33 @@ document.addEventListener("DOMContentLoaded", () => {
   const loginOverlay = document.getElementById("loginOverlay");
   const loginForm = document.getElementById("loginForm");
   const loginDemoBtn = document.getElementById("loginDemoBtn");
+  const loginSubmitBtn = document.getElementById("loginSubmitBtn");
   const loginPassword = document.getElementById("loginPassword");
   const loginEyeToggleBtn = document.getElementById("loginEyeToggleBtn");
 
   function unlockAccessPortal() {
-    if (loginOverlay) {
-      loginOverlay.classList.add("hidden");
-      sessionStorage.setItem("nishat_auth", "true");
+    const overlay = document.getElementById("loginOverlay");
+    if (overlay) {
+      overlay.classList.add("hidden");
     }
+    try {
+      sessionStorage.setItem("nishat_auth", "true");
+    } catch (e) {}
   }
 
   function lockAccessPortal() {
-    if (loginOverlay) {
-      loginOverlay.classList.remove("hidden");
-      sessionStorage.removeItem("nishat_auth");
+    const overlay = document.getElementById("loginOverlay");
+    if (overlay) {
+      overlay.classList.remove("hidden");
     }
+    try {
+      sessionStorage.removeItem("nishat_auth");
+    } catch (e) {}
   }
+
+  // Expose globally for instant button triggers
+  window.unlockAccessPortal = unlockAccessPortal;
+  window.lockAccessPortal = lockAccessPortal;
 
   if (loginForm) {
     loginForm.addEventListener("submit", (e) => {
@@ -1833,8 +1844,17 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  if (loginSubmitBtn) {
+    loginSubmitBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      unlockAccessPortal();
+      showToast("Access Granted", "Signed into Nishat Linen Operations Centre.", "success");
+    });
+  }
+
   if (loginDemoBtn) {
-    loginDemoBtn.addEventListener("click", () => {
+    loginDemoBtn.addEventListener("click", (e) => {
+      e.preventDefault();
       unlockAccessPortal();
       showToast("Demo Access Active", "Operating in high-precision simulated environment.", "info");
     });
@@ -1871,4 +1891,11 @@ document.addEventListener("DOMContentLoaded", () => {
   syncActiveFabricDisplay();
   renderFabricCatalog();
   renderInventoryTable();
-});
+}
+
+// Bootstrap resiliently across all execution and bundle environments
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initApp);
+} else {
+  initApp();
+}

@@ -349,8 +349,8 @@ const SEED_INVENTORY = [
 class InventoryStore {
   constructor() {
     this.storageKey = "apple_inventory_rolls_v2";
-    this.rolls = this.loadRolls();
     this.subscribers = new Set();
+    this.rolls = this.loadRolls();
   }
 
   loadRolls() {
@@ -385,6 +385,7 @@ class InventoryStore {
   }
 
   notify() {
+    if (!this.subscribers) return;
     for (const sub of this.subscribers) {
       try {
         sub(this.rolls, this.getMetrics());

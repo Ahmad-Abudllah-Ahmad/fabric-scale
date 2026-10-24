@@ -316,12 +316,12 @@ class FabricStore {
   constructor() {
     this.storageKey = "apple_fabric_catalog_v2";
     this.activeFabricKey = "apple_active_fabric_id_v1";
+    this.subscribers = new Set();
     this.fabrics = this.loadFabrics();
     this.activeFabricId = localStorage.getItem(this.activeFabricKey) || this.fabrics[0]?.id || "fab-1";
     if (!this.fabrics.some(f => f.id === this.activeFabricId)) {
       this.activeFabricId = this.fabrics[0]?.id || "fab-1";
     }
-    this.subscribers = new Set();
   }
 
   loadFabrics() {
@@ -364,6 +364,7 @@ class FabricStore {
   }
 
   notify() {
+    if (!this.subscribers) return;
     for (const sub of this.subscribers) {
       try {
         sub(this.fabrics, this.getActiveFabric());
